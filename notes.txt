@@ -111,17 +111,31 @@ Queries:
 
    	11. CHECK :- adding check on column with condition. If condition not satisfies then it will not inster in table
 		eg. 1) while CREATING TABLE :- 
-			CERATE TABLE <TABLE_NAME> (
-			hourly_pay INT,
-			CONSTRAINT <CHECK_CONDITION_NAME> CHECK ( field_name CONDITION  value ) 
-			
-		2) UPDATING COL
-			ALTER TAbLE <TABLE_NAME>
-			ADD CONSTRAINT <CHECK_CONSTRAINT_NAME> CHECK( field_name CONDITION value )
+				CERATE TABLE <TABLE_NAME> (
+				field_name INT,
+				CONSTRAINT <CHECK_CONDITION_NAME> CHECK ( field_name CONDITION  value ) 
+				
+				Eg. CREATE TABLE users (
+						username VARCHAR(20) NOT NULL,
+						age INT,
+						CONSTRAINT age_over_18 CHECK(age > 18)
+					);
 
-		3) REMOVE CHECK 
-			ALTER TABLE <TABLE_NAME>
-			DROP <CHECK_CONSTRAINT_NAME>
+			2) UPDATING COL
+				ALTER TAbLE <TABLE_NAME>
+				ADD CONSTRAINT <CHECK_CONSTRAINT_NAME> CHECK( field_name CONDITION value )
+
+			3) REMOVE CHECK 
+				ALTER TABLE <TABLE_NAME>
+				DROP <CHECK_CONSTRAINT_NAME>
+
+		- Multiple columns
+			CREATE TABLE companies (
+				name VARCHAR(255) NOT NULL,
+				address VARCHAR(255) NOT NULL,
+				CONSTRAINT name_address UNIQUE (name , address)
+			);
+
 
    	12. DEFAULT value in col
 		Methods 
@@ -172,7 +186,7 @@ Queries:
 			DROP FOREIGN KEY <FK_NAME>
  
    	15. JOINS
-		1) INNER JOIN: it returns Only condition common in both tables
+		1) INNER JOIN: it returns Only condition common in both tables (INNER keyword is optional)
 		eg. SELECT * 
 			FROM <LEFT_TABLE_NAME>
 			INNER JOIN <RIGHT_TABLE_NAME>
@@ -206,12 +220,17 @@ Queries:
 			NOTE:- You can use any type of join  
 		
 		5) CROSS JOIN:
-			-- whether the other table matches or not, the CROSS JOIN keyword returns all similar records from both tables
+			-- whether the other table matches or not, the CROSS JOIN keyword returns all similar records from both tables with all possible combinations.
 			
 			Query:
-			SELECT *
-			FROM CUSTOMER
-			CROSS JOIN ORDERS;	 	
+				SELECT *
+				FROM CUSTOMER
+				CROSS JOIN ORDERS;	 	
+
+				SELECT *
+				FROM CUSTOMER,
+				ORDERS;	 	
+				
 
    	16. FUNCTIONS 
 		1) COUNT(): Returns count of rows in table 
@@ -378,7 +397,7 @@ Queries:
 		Query:
 		1) ALTER <TABLE_NAME>
 		ADD CONSTRAINT <FK_NAME>
-		FOREIGN KEY(COL_NAME) REFERENCES <TABLE_NAME_2>(PRIMARY_KEY_COL_NAME)
+		FOREIGN KEY(COL_NAME_OF_CURRENT_TABLE) REFERENCES <TABLE_NAME_2>(PRIMARY_KEY_COL_NAME)
 		ON DELETE SET NULL/ ON DELETE CASCADE
 
    	28. STORED PROCEDURES
@@ -565,3 +584,82 @@ Queries:
 				SELECT CONCAT(author_fname, ' ', author_lname) AS author,  COUNT(*)
 				FROM books
 				GROUP BY author;
+
+# DATA TYPES
+	1. CHAR vs VARCHAR:
+		CHAR - have fixed size value, If value is less than defined length then it adds spaces in that position.
+		VARCHAR - It stores values of provided charecters. It does not adds spaces at empty space.
+
+	2. Unsigned vs Signed INT:
+		Unsigned : In this type we can't store negative numbers
+		Signed :  In this type we can store positive as well as Negative numbers;	
+	
+	3. DATE & TIME
+		a. DATE: 'YYYY:MM:DD' -> CURDATE()
+		b. TIME: 'HH:MM:SS' -> CURTIME()
+		c. DATETIME: 'YYYY:MM:DD HH:MM:SS' -> NOW()
+
+			DAY(birthdate),
+			DAYOFWEEK(birthdate),
+			DAYOFYEAR(birthdate)
+			MONTHNAME(birthdate),
+			YEAR(birthdate)
+
+			MONTH(birthdt),
+			DAY(birthdt),
+			HOUR(birthdt),
+			MINUTE(birthdt)
+
+			Date formates:
+				SELECT birthdate, DATE_FORMAT(birthdate, '%a %b %D') FROM people;
+				
+				SELECT birthdt, DATE_FORMAT(birthdt, '%H:%i') FROM people;
+				
+				SELECT birthdt, DATE_FORMAT(birthdt, 'BORN ON: %r') FROM people; // returns 12hr format
+
+	4. TIMESTAPS
+		CREATE TABLE captions2 (
+			text VARCHAR(150),
+			created_at TIMESTAMP default CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+		);
+	
+# OPERATORS
+	1. BETWEEN:
+		Eg.
+			SELECT title, released_year FROM books
+			WHERE released_year BETWEEN 2004 AND 2014;
+
+			SELECT title, released_year FROM books
+			WHERE released_year NOT BETWEEN 2004 AND 2014;
+	
+	2. TIME CASTING:
+		SELECT * FROM people WHERE birthtime 
+		BETWEEN CAST('12:00:00' AS TIME) 
+		AND CAST('16:00:00' AS TIME);
+
+	3. MODULO:
+		released_year % 2 = 1; // return 0 OR 1 = 0 (false), 1 (true)
+
+	4. CASE:
+		It is used to return custom text/string based on condition passing
+		EG.
+			SELECT 
+				author_fname, 
+				author_lname,
+				CASE WHEN COUNT(*) > 1 THEN CONCAT(COUNT(*)," Books") 
+				ELSE CONCAT(COUNT(*), " Book") 
+			END AS COUNT
+			FROM books
+			WHERE author_lname IS NOT NULL
+			GROUP BY author_fname, author_lname;
+
+ # IFNULL : It is used to replace value if null found while selecting from table;
+	Eg. 
+		SELECT 
+			first_name, 
+			last_name, 
+			IFNULL(SUM(amount), 0) AS money_spent
+		FROM
+			customers
+		GROUP BY first_name, last_name;
