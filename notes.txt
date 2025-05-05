@@ -464,7 +464,8 @@ Queries:
 			FROM table_name
 			WHERE condition;
 
-	Window Functions:
+	Window Functions: ( They are same as GROUP BY but can be used in SELECT, ORDER BY, HAVING )
+		Window functions perform agggregate operations on groups of rows, But they produce a result FOR EACH ROW.
 		functions that perform calculations across a set of rows related to the current row.
 		Syntax:
 			SELECT * 
@@ -479,10 +480,42 @@ Queries:
 
 		window functions are 
 			row_number(), 
-			rank(): skips duplicate rows, 
-			dens_rank(): does not skip duplicate rows, 
+			rank(): skips duplicate rows numbers, 
+			dens_rank(): does not skip duplicate numbers, 
 			lag(): return prev record, 
+			ntile(): a window function that allows you to break a table into a specified number of approximately equal groups, or <bucket count>,
+			first_value(): returns the first value in a window, types : first_value(val), first_value(val, 2)
 			lead(), etc
+
+		Eg.
+			// INITIAL TABLE - employees
+			emp_no 	| department 		| salary
+			1       | sales      		| 50000
+			2       | sales      		| 60000
+			20   	| customer_service 	| 40000
+			21   	| customer_service 	| 45000
+
+			SELECT emp_no, department, salary,
+			AVG(salary), ROW_NUMBER() OVER (PARTITION BY department) AS dept_avg_salary
+			FROM employees;
+
+			// TABLES AFTER WINDOW FUNCTION
+			emp_no 	| department 		| salary 	| row_number
+			-------- GROUP/WINDOW 1 -----------
+			1       | sales      		| 50000 	| 1
+			2       | sales      		| 60000 	| 2
+			-------- GROUP/WINDOW 2 -----------
+			20		| customer_service 	| 40000 	| 1
+			21		| customer_service 	| 45000 	| 2
+
+			// RESULT TABLE AFTER AVG(salary)
+			emp_no 	| department 		| dept_avg_salary 	| row_number 	
+			1       | sales      		| 55000 			| 1
+			2       | sales      		| 55000 			| 2
+			20		| customer_service 	| 42500 			| 1
+			21		| customer_service 	| 42500 			| 2
+
+
 
 	WITH Clause:
 		It is used to define temporary tables or result sets within a query
