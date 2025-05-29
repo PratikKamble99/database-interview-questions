@@ -600,7 +600,7 @@ Queries:
 		Eg. SELECT COUNT(*) FROM books WHERE title LIKE '%the%';
 
 	2. GROUP BY:
-		Used to segregate data into smaller group;
+		Used to segregate data into smaller groups;
 		Syntax: SELECT COUNT(*) FROM <table_name> GROUP BY <column_name>; // this will return count of rows in each formed group;
 
 		Eg. SELECT author_lname, COUNT(*) 
@@ -617,11 +617,17 @@ Queries:
 				SELECT CONCAT(author_fname, ' ', author_lname) AS author,  COUNT(*)
 				FROM books
 				GROUP BY author;
+		IMP NOTE:- 
+		|   Clause   |   Order of Execution   |   When It’s Used                 |   What It Filters                    |   Can Use Aggregates (`SUM()`, `COUNT()`)?   |
+		| ---------- | ---------------------- | -------------------------------- | ------------------------------------ | -------------------------------------------- |
+		| `WHERE`    | 🟡 Before `GROUP BY`   | Filters rows   before grouping   |   Individual rows   (raw data)       | ❌ No                                         |
+		| `HAVING`   | 🔵 After `GROUP BY`    | Filters rows   after grouping    |   Grouped rows   (aggregate results) | ✅ Yes                                        |
+
 
 # DATA TYPES
 	1. CHAR vs VARCHAR:
-		CHAR - have fixed size value, If value is less than defined length then it adds spaces in that position.
-		VARCHAR - It stores values of provided charecters. It does not adds spaces at empty space.
+		CHAR - has a fixed size value. If the value is less than the defined length, then it adds spaces in that position.
+		VARCHAR - It stores values of provided characters. It does not add spaces in empty space.
 
 	2. Unsigned vs Signed INT:
 		Unsigned : In this type we can't store negative numbers
