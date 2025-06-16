@@ -229,12 +229,21 @@ Queries:
 
 				SELECT *
 				FROM CUSTOMER,
-				ORDERS;	 	
+				ORDERS;
+
+		# JOIN ON With AND keyword works as WHERE condition in JOINS
+		Eg.
+            join activity e
+            on s.machine_id = e.machine_id // JOIN ON machine_id
+            and s.process_id= e.process_id // AND process_id
+            and s.activity_type="start" and e.activity_type="end"
 				
 
    	16. FUNCTIONS 
 		1) COUNT(): Returns count of rows in table 
-		
+			It ignores only NULL values — not 0
+			Wrong => COUNT(CASE WHEN state = 'approved' THEN 1 ELSE 0 END) AS approved_count
+
 		Query:
 		1) SELECT COUNT(<COL_NAME>) as <NICKNAME>
 		FROM <TABLE_NAME>
@@ -380,6 +389,8 @@ Queries:
 		SELECT SUM(amount), order_date
 		FROM transactions
 		GROUP BY order_date
+
+		When you use GROUP BY WITH multiple columns it groups by both columns combination value
 
    	26. ROLLUP
 		-- ROLLUP , extension of the GROUP BY clause
@@ -542,7 +553,7 @@ Queries:
 			JOIN temp_sales_table t ON s.store_name = t.store_name
 			WHERE t.total_sales > (SELECT AVG(total_sales) FROM temp_sales_table);
 
-# String Fuctions:-
+# String Functions:-
 	1. CONCAT(): Concats two or more strings
 		CONCAT( STRING1, STRING2, ...); // CONCAT( "Pratik", " ", "Kamble" ); => Pratik Kamble
 
@@ -624,6 +635,10 @@ Queries:
 		| `HAVING`   | 🔵 After `GROUP BY`    | Filters rows   after grouping    |   Grouped rows   (aggregate results) | ✅ Yes                                        |
 
 
+		NOTE :- 
+			WHERE filters rows before grouping (raw data).
+			HAVING filters groups after aggregation (summary data).
+
 # DATA TYPES
 	1. CHAR vs VARCHAR:
 		CHAR - has a fixed size value. If the value is less than the defined length, then it adds spaces in that position.
@@ -656,7 +671,7 @@ Queries:
 				
 				SELECT birthdt, DATE_FORMAT(birthdt, 'BORN ON: %r') FROM people; // returns 12hr format
 
-	4. TIMESTAPS
+	4. TIMESTAMPS
 		CREATE TABLE captions2 (
 			text VARCHAR(150),
 			created_at TIMESTAMP default CURRENT_TIMESTAMP,
