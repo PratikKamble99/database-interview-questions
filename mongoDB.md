@@ -272,7 +272,7 @@ Sharding:
     Enable sharding on db - sh.enableSharding("myDB")
     Shard the collection - sh.shardCollection("myDB.users", { userId: 1 })
 
-Transactions
+Transactions:
     Transactions in MongoDB allow you to group multiple read and write operations into a single atomic unit. This means either all operations succeed, or none are applied, just like in SQL databases.
     Phases:
         Create transaction:
