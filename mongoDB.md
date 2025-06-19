@@ -1,7 +1,7 @@
 MongoDB
 $-prefixed conditions and operators in MongoDB https://chatgpt.com/share/68512c73-60dc-8012-9587-33ba543561ec
 
-Read operations
+Read operations:
     – find vs findOne:
     .find = return all records. Returns array of documents
     .findOne = returns first matching document. It returns single object
@@ -11,26 +11,26 @@ Read operations
     
     Projection refers to specifying which fields should be included or excluded in the documents returned by a find() query.
 
-Write/Create operations
+Write/Create operations:
     – InsertOne vs insertMany
  		.insertOne = insert one record
 		.insertMany = inserts morethan one records Eg. .insertMany({}, {}, {})
 
-Update operations
+Update operations:
     – updateOne vs updateMany
 		Syntax:
 			db.<colleaction>.updateMany({field: {$cond: value}},{$set:{ field: value}})
 		// It adds new value if not present
 
-Delete operations
+Delete operations:
     deleteOne vs deleteMany
 
-Embedded/Nested documents
+Embedded/Nested documents:
     Document have nested objects:
     Read Syntax: .find( { 'nestedField.childField' :  true} )
     Nested document limit is 16 mb.
 
-Data Types in MongoDB
+Data Types in MongoDB:
     Text
     Boolean
     Number: Integer, NumberLong, …
@@ -41,7 +41,7 @@ Data Types in MongoDB
     Emd document
 
 
-SchemaValidations
+SchemaValidations:
     While creating
       db.createCollection("books",		      							 
         validator:{
@@ -95,25 +95,25 @@ Write concern:
 Atomicity: 
     atomicity means that a transaction (a sequence of operations) is treated as a single, indivisible unit of work. It ensures that either all operations within the transaction are completed successfully, or none of them are.
 
-$exists, $type
+$exists, $type:
     $ exists: it checks whether field is present or not in the document and returns
     $type: checks the type of field 
 		Eg. db.college.find({hasMacBook: { $exists: true, $type: 8}}) → 8 is number type of datatype
 
-$expr
+$expr:
     The $expr operator in MongoDB allows you to use aggregation expressions within query operations, enabling more complex comparisons between fields within the same document or using logical and mathematical operations
 
-$text
+$text:
     The $text operator in MongoDB is used to search the text index. This operator performs text search operations on the collection with a text index.
 
-$elemMatch
+$elemMatch:
     The $elemMatch operator is used to match documents that contain an array field with at least one element that matches all the specified query criteria. 
 
-Sort
+Sort:
     db.teachers.find().sort({ field_1: 1, field_2: -1 });
     1 = asc, -1 = desc 
 
-Advanced update operator
+Advanced update operator:
     $inc - increment value by the provided num
         d.collection.find({}, {$inc: { age: 2 } })
     $unset - to remove field from document
@@ -121,14 +121,14 @@ Advanced update operator
     $upsert - 'upsert' is a blend of 'update' and 'insert'. It denotes an operation in MongoDB that updates an existing document, or if the document doesn't exist, inserts a new one. 
         db.collection.updateOne({name:”golu”}, { $set: { age: 1 }, { upsert: true }} )
 
-Array update methods
+Array update methods:
     $push - it used to push an object in array field
     Eg. db.collection.updateOne({name:”ram”}, { $push: { experience: { field: value } } } );
     $addToSet - it pushes the object into the array if not present with the same values. No redundancy  
     $pull - it removes object from array which are matching 
     $pop - it removes object from start or end based on value → 1 = from end, -1 = from start
 
-Indexing
+Indexing:
     Indexing is a mechanism to improve the performance of search queries in a MongoDB collection. Just like the index of a book helps you find a topic quickly, a MongoDB index helps find documents faster, without scanning the entire collection.
     Issue: 
         When there is no index, MongoDB must perform a collection scan:
@@ -158,7 +158,7 @@ Text index:
     – Tokenization - Input strings are split into tokens (words), removing most punctuation. For example, "hello world!" becomes ["hello", "world"].
     – stemming - Words are reduced to their base/root form. For example, "running", "runs" → "run". This helps match different variations of a word.
 
-Aggregate queries
+Aggregate queries:
     An aggregate query in MongoDB is used to process data records and return computed results.
     It uses a pipeline of stages, where each stage transforms the data and passes it to the next.
     
@@ -170,7 +170,7 @@ Aggregate queries
     $filter: Used to add condition while using $group
     Eg. $filter:{ input: field, as: identifier, con: expression }
 
-$bucket
+$bucket:
     The $bucket stage in MongoDB’s aggregation pipeline is used to group documents into buckets based on a range of values — like a histogram. Think of $bucket as "range-based grouping", where you manually define the boundaries of the buckets.
     Syntax. 
         {
@@ -246,10 +246,10 @@ Example
     ])
 
 
-Replication
+Replication:
     In MongoDB, replication is the process of synchronizing data across multiple servers, and replicas are the copies of the same data stored on different MongoDB instances.
     MongoDB uses Replica Sets for high availability and data redundancy.
-    Comannd to create replica db
+    Command to create a replica db
     Sudo mongod –port  27018 –dbpath <your-mongodb-path> –replSet <replica-set-id>
 
     rs.initiate({
@@ -267,7 +267,7 @@ Replication
     Use admin - switch to admin
     db.getMongo().setSlaveOk()
 
-Sharding
+Sharding: 
     Sharding is MongoDB's approach to horizontal scaling, where data is distributed across multiple servers (called shards) to handle large data volumes and high throughput.
     Enable sharding on db - sh.enableSharding("myDB")
     Shard the collection - sh.shardCollection("myDB.users", { userId: 1 })
