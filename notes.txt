@@ -708,7 +708,7 @@ Queries:
 			WHERE author_lname IS NOT NULL
 			GROUP BY author_fname, author_lname;
 
- # IFNULL : It is used to replace value if null found while selecting from table;
+ # IFNULL: It is used to replace value if null found while selecting from table;
 	Eg. 
 		SELECT 
 			first_name, 
@@ -717,3 +717,16 @@ Queries:
 		FROM
 			customers
 		GROUP BY first_name, last_name;
+
+# Create a temporary variable in a function
+	CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+		BEGIN
+		    DECLARE offset_val INT;
+		    SET offset_val = N - 1; ## temp variable
+		  RETURN (
+		      # Write your MySQL query statement below.
+		        SELECT (SELECT DISTINCT salary FROM Employee
+		        ORDER BY salary
+		        LIMIT 1 OFFSET offset_val) # You can't directly do N-1
+		  );
+		END
