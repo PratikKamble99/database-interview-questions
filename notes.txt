@@ -636,8 +636,9 @@ Queries:
 
 
 		NOTE :- 
-			WHERE filters rows before grouping (raw data).
-			HAVING filters groups after aggregation (summary data).
+			- WHERE filters rows before grouping (raw data).
+			- GROUP BY produces a new result set where rows are grouped by one or more columns.
+			  HAVING filters groups after aggregation (summary data).
 
 # DATA TYPES
 	1. CHAR vs VARCHAR:
