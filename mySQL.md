@@ -559,7 +559,7 @@ GROUP BY order_date
 
 **When you use GROUP BY WITH multiple columns it groups by both columns combination value**
 
-### ROLLUP
+## 26. ROLLUP
 - ROLLUP , extension of the GROUP BY clause
 - produces another row d show GRAND TOTAL ( super aggregate value )
 
