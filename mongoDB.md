@@ -97,7 +97,8 @@ db.runCommand({
 ```
 
 ## Write concern:
-Write concern describes the level of acknowledgment requested from MongoDB for write operations to a standalone mongod, replica sets, or sharded clusters.
+- Write concern describes the level of acknowledgment requested from MongoDB for write operations to a standalone mongod, replica sets, or sharded clusters.
+- It controls how many replica set members must confirm the write before it's considered successful.
 
 ## Atomicity: 
 atomicity means that a transaction (a sequence of operations) is treated as a single, indivisible unit of work. It ensures that either all operations within the transaction are completed successfully, or none of them are.
