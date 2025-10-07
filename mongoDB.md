@@ -270,7 +270,10 @@ Example
 ```
 
 ## Replication
-- In MongoDB, replication is the process of synchronizing data across multiple servers, and replicas are the copies of the same data stored on different MongoDB instances.
+- In MongoDB, Replication means keeping multiple copies of the same data on different MongoDB servers.
+- A Replica Set in MongoDB consists of:
+1. 1 Primary node → Handles all writes & reads (by default)
+2. 1 or more Secondary nodes → Copy data from primary
 - MongoDB uses Replica Sets for high availability and data redundancy.
 - Comannd to create replica db
     ```cmd
@@ -293,7 +296,7 @@ Example
     ```
 
 ## Sharding
-- Sharding is MongoDB's approach to horizontal scaling, where data is distributed across multiple servers (called shards) to handle large data volumes and high throughput.
+- Sharding is MongoDB's approach to horizontal scaling. Sharding means splitting a large dataset into smaller pieces (shards) and distributing them across multiple servers..
 - Enable sharding on db - sh.enableSharding("myDB")
 - Shard the collection - sh.shardCollection("myDB.users", { userId: 1 })
 
