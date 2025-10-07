@@ -272,8 +272,8 @@ Example
 ## Replication
 - In MongoDB, Replication means keeping multiple copies of the same data on different MongoDB servers.
 - A Replica Set in MongoDB consists of:
-1. 1 Primary node → Handles all writes & reads (by default)
-2. 1 or more Secondary nodes → Copy data from primary
+	1. 1 Primary node → Handles all writes & reads (by default)
+	2. 1 or more Secondary nodes → Copy data from primary
 - MongoDB uses Replica Sets for high availability and data redundancy.
 - Comannd to create replica db
     ```cmd
