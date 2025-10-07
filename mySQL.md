@@ -687,7 +687,7 @@ if you use partition clause then it will create separate partition with column c
 	FROM employees;
 	```
 
-**Window functions are**
+**Window functions are used in a select query. Window functions allow you to perform calculations across a set of rows that are related to the current row, while still returning individual rows**
 - row_number(), 
 - rank(): skips duplicate rows numbers, 
 - dens_rank(): does not skip duplicate numbers, 
