@@ -290,6 +290,7 @@ DROP FOREIGN KEY <FK_NAME>
 ```
  
 ## 15. JOINS
+	Joines are used to combine rows from two or more tables based on related column between them.
 1) INNER JOIN: it returns Only condition common in both tables (INNER keyword is optional)
 ```mysql
 SELECT * 
@@ -475,6 +476,7 @@ Query:
 	```
 
 ## 22. INDEX
+	An Index is used to speed up the search/query process within table.
 - INDEX id BTree data structure
 - indexes are used to find values within specific column more quickly 
 - MySQL search normally sequentially through a column 
@@ -610,6 +612,7 @@ CALL <PROCEDURE_NAME>(<ARG>)
 ```
 
 ## 29. TRIGGERS
+Triggers are set of commands that automatically execute when a specific event occurs in the database.
 - When an event happens, do something
 - ( INSERT< UPDATE, DELETE )
 - benefits ==> checks data, handle errors, auditing tables
@@ -973,3 +976,35 @@ BEGIN
 		);
 	END	
 ```
+
+## 39. Backup Of mysql DB
+1. Using mysqldump
+	```
+	mysqldump -u [username] -p [database_name] > [backup_file_name].sql
+	```
+
+## 40. Normalization:
+It is process of orgnizing data in databaseto reduce redundancy and improve data integrity.
+
+Types:
+1. First Normal Form (1NF) : Eliminate duplicate columns from the same table and create separate tables for each group of related data.
+	
+2. Second Normal Form (2NF) : Remove partial dependencies; ensure that all non-key attributes are fully functional dependent on the primary key.
+		
+3. Third Normal Form (3NF) : Remove transitive dependencies; ensure that non-key attributes are not dependent on other non-key attributes.
+
+4. Boyce-Codd Normal Form (BCNF) : A stronger version of 3NF; every determinant must be a candidate key.
+
+5. Fourth Normal Form (4NF) : Remove multi-valued dependencies; a record should not contain two or more independent multi-valued facts.
+
+6. Fifth Normal Form (5NF) : Decompose tables to eliminate redundancy; ensure that all join dependencies are a consequence of the candidate keys.
+
+## 41. ACID Properties:
+1. Atomicity: all operations are completed successfully or none are applied.
+2. Consistency: transaction brings the database from one valid state to another.
+3. Isolation: If two transactions does not interfere with each other
+4. Durability: once a transaction is committed, data persists.
+
+## 42. Inner vs Correlated Subquery
+1. Innter query: It executed only once and its result is used by outer query
+2. Correlated query: It executed multiple times, once for each row processed by outer query.
