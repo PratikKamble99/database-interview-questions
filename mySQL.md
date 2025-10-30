@@ -273,7 +273,7 @@ Methods:
 ```mysql
 CREATE TABLE <TABLE_NAME>(
 	field_name data_type,
-	CONSTRAINT <FK_NAME> FOREIGN KEY (field_name) REFERENCES <TABLE_NAME_2>(table_2_field)
+	FOREIGN KEY (field_name) REFERENCES <TABLE_NAME_2>(table_2_field)
 )
 ```
 				
