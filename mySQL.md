@@ -668,9 +668,9 @@ WHERE condition;
 ```
 
 ## 32. Window Functions: 
-( They are same as GROUP BY but can be used in SELECT, ORDER BY, HAVING )
+( They are the same as GROUP BY, but can be used in SELECT, ORDER BY, and HAVING )
 
-- Window functions perform agggregate operations on groups of rows, But they produce a result FOR EACH ROW.
+- Window functions perform aggregate operations on groups of rows, but they produce a result FOR EACH ROW.
 - functions that perform calculations across a set of rows related to the current row.
 
 Syntax:
@@ -680,8 +680,9 @@ SELECT
 FROM <table_name>;
 ```
 
-- Here over() function treats all records as one window, and 
-if you use partition clause then it will create separate partition with column condition
+- Here over() function treats all records as one window, and
+- PARTITION BY - divides your result set into logical groups. Use when you only have to GROUP BY without collapsing rows
+if you use the PARTITION clause, then it will create a separate partition with a column condition
 
 	EG. 
 	```mysql
