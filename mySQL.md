@@ -675,7 +675,7 @@ WHERE condition;
 
 Syntax:
 ```mysql
-SELECT * 
+SELECT 
 <aggregate_fn> over(partition by <column_name>) as alice			
 FROM <table_name>;
 ```
@@ -685,7 +685,7 @@ if you use partition clause then it will create separate partition with column c
 
 	EG. 
 	```mysql
-	SELECT * 
+	SELECT 
 	row_number() over(partition by salary) as row_number
 	FROM employees;
 	```
