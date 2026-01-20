@@ -14,7 +14,7 @@
     LIMIT 1 OFFSET 2
 
 
--- 2. Customers Who never orderd
+-- 2. Customers Who never ordered
 
     SELECT * FROM CUSTOMERS
     WHERE id NOT IN  
@@ -79,7 +79,8 @@ WHERE id IN /* 2 - */(SELECT id FROM duplicates WHERE rn > 1);
 
 
 -- 8. Employees Earning More Than Their Manager
-SELECT e.name,  m.name as m_name, e.salary, m.salary as m_salary FROM Employee e
+SELECT e.name,  m.name as m_name, e.salary, m.salary as m_salary 
+FROM Employee e
 JOIN Employee m
 ON e.manager_id = m.id
 WHERE e.salary > m.salary;
@@ -178,3 +179,156 @@ SELECT * FROM (SELECT id, department_id, salary,
 ROW_NUMBER() OVER(PARTITION BY department_id ORDER BY salary DESC ) as rn
 FROM Employee) a
 WHERE a.rn <= 2
+
+-- Nth Highest Salary --
+-- https://leetcode.com/problems/nth-highest-salary/description/
+
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  RETURN (
+      # Write your MySQL query statement below.
+    SELECT salary FROM (
+        SELECT salary,
+        dense_rank() OVER(ORDER BY salary DESC) as rnk
+        FROM Employee
+    ) t
+    WHERE rnk=N
+    LIMIT 1
+  );
+END
+
+-- Rank Scores -- 
+
+/* 
+    Table: Scores
+
+    +-------------+---------+
+    | Column Name | Type    |
+    +-------------+---------+
+    | id          | int     |
+    | score       | decimal |
+    +-------------+---------+
+    id is the primary key (column with unique values) for this table.
+    Each row of this table contains the score of a game. Score is a floating point value with two decimal places.
+    
+
+    Write a solution to find the rank of the scores. The ranking should be calculated according to the following rules:
+
+    The scores should be ranked from the highest to the lowest.
+    If there is a tie between two scores, both should have the same ranking.
+    After a tie, the next ranking number should be the next consecutive integer value. In other words, there should be no holes between ranks.
+    Return the result table ordered by score in descending order.
+ */
+
+SELECT Score ,
+dense_rank() OVER( ORDER BY score DESC) as "rank"
+FROM Scores
+
+
+-- Department Top Three Salaries --
+/* 
+    Table: Employee
+
+    +--------------+---------+
+    | Column Name  | Type    |
+    +--------------+---------+
+    | id           | int     |
+    | name         | varchar |
+    | salary       | int     |
+    | departmentId | int     |
+    +--------------+---------+
+    id is the primary key (column with unique values) for this table.
+    departmentId is a foreign key (reference column) of the ID from the Department table.
+    Each row of this table indicates the ID, name, and salary of an employee. It also contains the ID of their department.
+    
+
+    Table: Department
+
+    +-------------+---------+
+    | Column Name | Type    |
+    +-------------+---------+
+    | id          | int     |
+    | name        | varchar |
+    +-------------+---------+
+    id is the primary key (column with unique values) for this table.
+    Each row of this table indicates the ID of a department and its name.
+    
+
+    A company's executives are interested in seeing who earns the most money in each of the company's departments. A high earner in a department is an employee who has a salary in the top three unique salaries for that department.
+ */
+
+SELECT d.name as Department, t.name as Employee, t.salary as Salary/* , t.rn */
+FROM (SELECT name, salary,
+departmentId,
+dense_rank() OVER (PARTITION BY departmentId ORDER BY salary DESC) as "rn"
+FROM Employee e) t
+JOIN Department d
+ON t.departmentId = d.id
+WHERE t.rn <= 3
+
+-- Consecutive Numbers --
+/* 
+    Table: Logs
+
+    +-------------+---------+
+    | Column Name | Type    |
+    +-------------+---------+
+    | id          | int     |
+    | num         | varchar |
+    +-------------+---------+
+    In SQL, id is the primary key for this table.
+    id is an autoincrement column starting from 1.
+    
+
+    Find all numbers that appear at least three times consecutively.
+ */
+
+SELECT DISTINCT(num) as ConsecutiveNums 
+FROM (SELECT
+    num,
+    LAG(num, 1) OVER (ORDER BY id) AS prev1,
+    LAG(num, 2) OVER (ORDER BY id) AS prev2
+FROM Logs) t
+WHERE num = prev1 AND num = prev2
+
+-- Rising Temperature --
+/* 
+    Table: Weather
+
+    +---------------+---------+
+    | Column Name   | Type    |
+    +---------------+---------+
+    | id            | int     |
+    | recordDate    | date    |
+    | temperature   | int     |
+    +---------------+---------+
+    id is the column with unique values for this table.
+    There are no different rows with the same recordDate.
+    This table contains information about the temperature on a certain day.
+    
+    Write a solution to find all dates' id with higher temperatures compared to its previous dates (yesterday).
+ */
+
+SELECT w.id as Id
+FROM Weather w
+JOIN Weather pw
+on w.recordDate = DATE_ADD(pw.recordDate, INTERVAL 1 DAY)
+WHERE w.temperature > pw.temperature;
+
+-- Trips and Users: https://leetcode.com/problems/trips-and-users/description/ --
+SELECT /* COUNT(id), */ request_at as Day, ROUND(AVG(status != "completed") ,2) as Cancellation_Rate
+FROM Trips t
+JOIN Users c ON c.users_id = t.client_id AND c.banned = "No"
+JOIN Users d ON d.users_id = t.driver_id AND d.banned = "No"
+WHERE request_at BETWEEN '2013-10-01' AND '2013-10-03'
+GROUP BY request_at 
+ORDER BY request_at 
+
+-- Sales Analysis III: https://leetcode.com/problems/sales-analysis-iii --
+SELECT p.product_id , p.product_name FROM sales s
+JOIN Product p 
+ON p.product_id = s.product_id
+GROUP BY p.product_id
+HAVING
+    MIN(s.sale_date) >= '2019-01-01'
+    AND MAX(s.sale_date) <= '2019-03-31';
