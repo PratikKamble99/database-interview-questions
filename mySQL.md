@@ -546,9 +546,8 @@ SELECT field_1, field_2, field_3 FROM <TABLE_2>
 
 ## 21. VIEW
 
-- Virtual table based on the result set of an SQL statement
-- The fields in views are fields from one or more real tables in the database
-- They are not real tables, but can be interacted with if they were
+- View is a virtual table based on the result set of an SQL SELECT statement.
+- It does not store data physically but dynamically retrieves it from one or more underlying tables every time it is queried. 
 - You can perform all operations on view as TABLE
 
 Query:
