@@ -546,8 +546,8 @@ SELECT column_1, column_2, column_3 FROM <TABLE_2>
 
 ## 21. VIEW
 
-- Virtual table based on the result set of an SQL statement
-- The columns in views are columns from one or more real tables in the database
+- View is a virtual table based on the result set of an SQL SELECT statement.
+- It does not store data physically but dynamically retrieves it from one or more underlying tables every time it is queried.
 - You can perform all operations on view as TABLE
 - View need all unique columns names in view
 - No data is stored physically
@@ -829,12 +829,12 @@ FROM <table_name>;
 - PARTITION BY - divides your result set into logical groups. Use when you only have to GROUP BY without collapsing rows
   if you use the PARTITION clause, then it will create a separate partition with a column condition
 
-                                                                                                                                                                                                          EG.
-                                                                                                                                                                                                          ```mysql
-                                                                                                                                                                                                          SELECT
-                                                                                                                                                                                                          row_number() over(partition by salary) as row_number
-                                                                                                                                                                                                          FROM employees;
-                                                                                                                                                                                                          ```
+                                                                                                                                                                                                              EG.
+                                                                                                                                                                                                              ```mysql
+                                                                                                                                                                                                              SELECT
+                                                                                                                                                                                                              row_number() over(partition by salary) as row_number
+                                                                                                                                                                                                              FROM employees;
+                                                                                                                                                                                                              ```
 
 **Window functions are used in a select query. Window functions allow you to perform calculations across a set of rows that are related to the current row, while still returning individual rows**
 
