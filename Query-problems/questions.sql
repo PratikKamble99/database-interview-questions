@@ -332,3 +332,40 @@ GROUP BY p.product_id
 HAVING
     MIN(s.sale_date) >= '2019-01-01'
     AND MAX(s.sale_date) <= '2019-03-31';
+
+-- Customer Placing the Largest Number of Orders: https://leetcode.com/problems/customer-placing-the-largest-number-of-orders/submissions/1891771335/ --
+SELECT  customer_number
+FROM Orders 
+GROUP BY customer_number
+ORDER BY COUNT(*) DESC
+LIMIT 1
+
+-- Tree Node: https://leetcode.com/problems/tree-node/description/ --
+SELECT t.id,
+CASE 
+    WHEN t.p_id IS NULL THEN "Root"
+    WHEN t.id IN (SELECT p_id FROM Tree WHERE p_id IS NOT NULL) THEN "Inner"
+    ELSE "Leaf"
+END as 'type'
+FROM Tree t
+
+-- Exchange Seats: https://leetcode.com/problems/exchange-seats/description/ --
+SELECT 
+CASE
+    WHEN id % 2 = 1 AND id = (select MAX(id) FROM Seat) THEN id
+    WHEN id % 2 = 1 THEN id+1
+    ELSE id-1
+END as id, student
+FROM Seat
+ORDER by id
+
+-- Monthly Transactions I: https://leetcode.com/problems/monthly-transactions-i/description/ --
+SELECT 
+    CONCAT(YEAR(trans_date),"-", DATE_FORMAT(trans_date, '%m')) as month, 
+    country ,
+    COUNT(*) as trans_count , 
+    SUM(CASE WHEN state = "approved" THEN 1 ELSE 0 END) as approved_count , 
+    SUM(amount) as trans_total_amount , 
+    SUM(CASE WHEN state = "approved" THEN amount ELSE 0 END) as approved_total_amount  
+FROM transactions
+GROUP BY country, CONCAT(YEAR(trans_date),"-", DATE_FORMAT(trans_date, '%m'));

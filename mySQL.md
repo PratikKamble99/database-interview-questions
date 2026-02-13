@@ -155,13 +155,13 @@
     1. Insert single row
 
     ```mysql
-    INSERT INTO <TABLE_NAME> (field_1, field_2, field_3) VALUES (value_1, value_2, value_3)
+    INSERT INTO <TABLE_NAME> (column_1, column_2, column_3) VALUES (value_1, value_2, value_3)
     ```
 
     Note: length of field and values should be equal while using this approach. 2. Insert multiple rows
 
     ```mysql
-    INSERT INTO <TABLE_NAME> (field_1, field_2, field_3)
+    INSERT INTO <TABLE_NAME> (column_1, column_2, column_3)
     VALUES  ("Pratik", 3, false),
     		("Rahul", 4, false),
     		("Rutik", 5, false);
@@ -182,7 +182,7 @@
     2. Select particular fields only:
 
     ```mysql
-    SELECT field_1, field_2, field_3 FROM <TABLE_NAME>
+    SELECT column_1, column_2, column_3 FROM <TABLE_NAME>
     ```
 
     3. Select with condition:
@@ -215,7 +215,7 @@
        note: don't DELETE use without WHERE condition. It will delect ALL table rows.
        DROP TABLE and DELETE are different. DROP TABLE will delete table from database and DELETE will delete rows from table.
 
-## 7. **auto commit, commit & rollback ( check in details )**
+## 7. **auto commit, commit & rollback ( check point no. 41 )**
 
 ## 8. **DATE, TIME, DATETIME data-types**
 
@@ -231,11 +231,11 @@
 ## 9. UNIQUE values
 
 1. CREATE TABLE <TABLE_NAME> (
-   field_1 datatype UNIQUE
+   column_1 datatype UNIQUE
    )
 2. ALTER TABLE <TABLE_NAME>
    ADD CONSTRAINTS
-   UNIQUE(field_name)
+   UNIQUE(column_name)
 
 ## 10. NOT NULL values
 
@@ -250,8 +250,8 @@ adding check on column with condition. If condition not satisfies then it will n
 
 ```mysql
 CREATE TABLE <TABLE_NAME> (
-field_name INT,
-CONSTRAINT <CHECK_CONDITION_NAME> CHECK ( field_name CONDITION  value )
+column_name INT,
+CONSTRAINT <CHECK_CONDITION_NAME> CHECK ( column_name CONDITION  value )
 )
 Eg. CREATE TABLE users (
 		username VARCHAR(20) NOT NULL,
@@ -264,7 +264,7 @@ Eg. CREATE TABLE users (
 
 ```mysql
 ALTER TAbLE <TABLE_NAME>
-ADD CONSTRAINT <CHECK_CONSTRAINT_NAME> CHECK( field_name CONDITION value )
+ADD CONSTRAINT <CHECK_CONSTRAINT_NAME> CHECK( column_name CONDITION value )
 ```
 
 3. REMOVE CHECK
@@ -306,12 +306,12 @@ Methods:
 
 ```mysql
 CREATE TABLE <TABLE_NAME>(
-	field_name data_type PRIMARY KEY
+	column_name data_type PRIMARY KEY
 )
 OR
 CREATE TABLE <TABLE_NAME>(
-	field_name data_type NOT NULL,
-	PRIMARY KEY(field_name)
+	column_name data_type NOT NULL,
+	PRIMARY KEY(column_name)
 )
 ```
 
@@ -320,7 +320,7 @@ CREATE TABLE <TABLE_NAME>(
 ```mysql
 ALTER TABLE <TABLE_NAME>
 ADD CONSTRAINT
-PRIMARY KEY (field_name)
+PRIMARY KEY (column_name)
 ```
 
 3. Delete PRIMARY KEY
@@ -339,8 +339,8 @@ Methods:
 
 ```mysql
 CREATE TABLE <TABLE_NAME>(
-	field_name data_type,
-	FOREIGN KEY (field_name) REFERENCES <TABLE_NAME_2>(table_2_field)
+	column_name data_type,
+	FOREIGN KEY (column_name) REFERENCES <TABLE_NAME_2>(table_2_field)
 )
 ```
 
@@ -348,7 +348,7 @@ CREATE TABLE <TABLE_NAME>(
 
 ```mysql
 ALTER TABLE <TABLE_NAME>
-ADD CONSTRAINT <FK_NAME> FOREIGN KEY (field_name) REFERENCES <TABLE_NAME_2>(table_2_field)
+ADD CONSTRAINT <FK_NAME> FOREIGN KEY (column_name) REFERENCES <TABLE_NAME_2>(table_2_field)
 ```
 
 3. Delete FOREIGN KEY
@@ -368,7 +368,7 @@ DROP FOREIGN KEY <FK_NAME>
 SELECT *
 FROM <LEFT_TABLE_NAME>
 INNER JOIN <RIGHT_TABLE_NAME>
-ON <LEFT_TABLE.FIELD_NAME> CONDITION <RIGHT_TABLE.FIELD_NAME>
+ON <LEFT_TABLE.COLUMN_NAME> CONDITION <RIGHT_TABLE.COLUMN_NAME>
 ```
 
 2. LEFT JOIN: It pull LEFT TABLE ALL data and RIGHT TABLE matching only rows
@@ -377,7 +377,7 @@ ON <LEFT_TABLE.FIELD_NAME> CONDITION <RIGHT_TABLE.FIELD_NAME>
 SELECT *
 FROM <LEFT_TABLE_NAME>
 LEFT JOIN <RIGHT_TABLE_NAME>
-ON <LEFT_TABLE.FIELD_NAME> CONDITION <RIGHT_TABLE.FIELD_NAME>
+ON <LEFT_TABLE.COLUMN_NAME> CONDITION <RIGHT_TABLE.COLUMN_NAME>
 ```
 
 2. RIGHT JOIN:
@@ -387,7 +387,7 @@ ON <LEFT_TABLE.FIELD_NAME> CONDITION <RIGHT_TABLE.FIELD_NAME>
 SELECT *
 FROM <LEFT_TABLE_NAME>
 RIGHT JOIN <RIGHT_TABLE_NAME>
-ON <LEFT_TABLE.FIELD_NAME> CONDITION <RIGHT_TABLE.FIELD_NAME>
+ON <LEFT_TABLE.COLUMN_NAME> CONDITION <RIGHT_TABLE.COLUMN_NAME>
 ```
 
 4. SELF JOIN:
@@ -450,7 +450,7 @@ WHERE <CONDITION>
 - MIN(),
 - AVG(),
 - SUM(),
-- CONCAT(field_1, field_2 ),
+- CONCAT(column_1, column_2 ),
 - LENGTH(COL_NAME),
 - SUBSTR(COL_NAMe, START_INDEX, CHAR_LENGTH)
 - ROUND( NUMBER, decimals_after_dot_number)
@@ -539,17 +539,19 @@ LIMIT 10 OFFSET 20
 Query:
 
 ```mysql
-SELECT field_1, field_2, field_3 FROM <TABLE_1>
+SELECT column_1, column_2, column_3 FROM <TABLE_1>
 UNION
-SELECT field_1, field_2, field_3 FROM <TABLE_2>
+SELECT column_1, column_2, column_3 FROM <TABLE_2>
 ```
 
 ## 21. VIEW
 
 - Virtual table based on the result set of an SQL statement
-- The fields in views are fields from one or more real tables in the database
-- They are not real tables, but can be interacted with if they were
+- The columns in views are columns from one or more real tables in the database
 - You can perform all operations on view as TABLE
+- View need all unique columns names in view
+- No data is stored physically
+- Helps with security by exposing only certain columns to user
 
 Query:
 
@@ -574,13 +576,14 @@ Query:
 
 ## 22. INDEX
 
-    An Index is used to speed up the search/query process within table.
+    Index are special database objects that make faster data retrieval from table
 
+- Primary key is default index for every table
 - INDEX id BTree data structure
-- indexes are used to find values within specific column more quickly
-- MySQL search normally sequentially through a column
+- MySQL search normally sequentially through a column, but with index it search through BTree structure
 - The longer the column, the more expensive the operation
 - UPDATE takes more time, SELECT take less
+- It makes read operation faster but write operation slower because it needs to update index as well
 
 Query:
 
@@ -588,7 +591,7 @@ Query:
 
     ```mysql
     CREATE INDEX <INDEX_NAME>
-    ON <TABLE_NAME>(field_1, field_2)
+    ON <TABLE_NAME>(column_1)
     ```
 
 2. ALTER TABLE
@@ -602,6 +605,15 @@ Query:
     ```mysql
     SHOW INDEXES FROM <TABLE_NAME>
     ```
+
+### Composite Index:
+
+It is an index on multiple columns. It is used to speed up queries that filter on multiple columns. It is more efficient than using multiple single-column indexes.
+
+```mysql
+CREATE INDEX <INDEX_NAME>
+ON <TABLE_NAME>(column_1, column_2)
+```
 
 ## 23. SUBQUERIES
 
@@ -653,6 +665,7 @@ WHERE (SELECT AVG(hourly_pay) FROM employee) < hourly_pay
 
 ## 25. GROUP BY
 
+- It collects data across multiple records and group the result by one or more column
 - aggregate all rows by specific column
 - often usage with aggregate function SUM(), MAX(), MIN(), AVG(), COUNT()
 
@@ -695,7 +708,7 @@ ON DELETE SET NULL/ ON DELETE CASCADE
 
 ## 28. STORED PROCEDURES
 
-- is Prepared SQL code that you can save
+- predefined SQL code that you can save in Database and execute whenever you needed.
 - Great if there's query you write often
 - reduces traffic
 - Increase performance
@@ -704,27 +717,34 @@ ON DELETE SET NULL/ ON DELETE CASCADE
 
 Query:
 
-1. DELIMITER: \$$ This line replace delimiter symbol( ; ) to $$
+1. `Create` stored procedure
 
 ```mysql
-CREATE PROCEDURE <PROCEDURE_NAME>(IN <PARAMETER_NAME> DATA_TYPE)
+DELEIMITER $$ # change delimiter to $$
+CREATE PROCEDURE <PROCEDURE_NAME>(IN PARAMETER_NAME DATA_TYPE, OUT OUT_PARAMETER_NAME DATA_TYPE)
 BEGIN
-	/* Procedure body */
+    SELECT balance INTO bal # output parameter
+    FROM accounts
+    WHERE account_id = PARAMETER_NAME;
 END $$
-DELIMITER ;
+
+DELIMITER ; # reset delimiter to default
 ```
 
-2. DROP PROCEDURE <PROCEDURE_NAME>
+2. `Drop` stored procedure
 
 ```mysql
-DROP PROCEDURE <PROCEDURE_NAME>
+DROP PROCEDURE IF EXISTS <PROCEDURE_NAME>
 ```
 
-3. CALL <PROCEDURE_NAME>(<ARG>)
+3. `Call` Stored procedure
 
 ```mysql
-CALL <PROCEDURE_NAME>(<ARG>)
+CALL <PROCEDURE_NAME>(ARG, @OUTPUT_PARAM)
+SELECT @OUTPUT_PARAM
 ```
+
+IN for input parameter and OUT for output parameter
 
 ## 29. TRIGGERS
 
@@ -809,12 +829,12 @@ FROM <table_name>;
 - PARTITION BY - divides your result set into logical groups. Use when you only have to GROUP BY without collapsing rows
   if you use the PARTITION clause, then it will create a separate partition with a column condition
 
-                                                  EG.
-                                                  ```mysql
-                                                  SELECT
-                                                  row_number() over(partition by salary) as row_number
-                                                  FROM employees;
-                                                  ```
+                                                                                                                                                                                                          EG.
+                                                                                                                                                                                                          ```mysql
+                                                                                                                                                                                                          SELECT
+                                                                                                                                                                                                          row_number() over(partition by salary) as row_number
+                                                                                                                                                                                                          FROM employees;
+                                                                                                                                                                                                          ```
 
 **Window functions are used in a select query. Window functions allow you to perform calculations across a set of rows that are related to the current row, while still returning individual rows**
 
@@ -954,6 +974,8 @@ FROM <table_name>;
    Eg. SELECT name FROM books WHERE name LIKE "%\_%";
 
 ## 36. Aggregate functions
+
+Aggregate function per group of rows and return a single value as result. We can use at select statement.
 
 1. COUNT():
    It returns count of the rows in table.
@@ -1153,12 +1175,55 @@ Types:
 
 6. Fifth Normal Form (5NF) : Decompose tables to eliminate redundancy; ensure that all join dependencies are a consequence of the candidate keys.
 
-## 41. ACID Properties:
+## 41. Transactions:
 
-1. Atomicity: all operations are completed successfully or none are applied.
-2. Consistency: transaction brings the database from one valid state to another.
-3. Isolation: If two transactions does not interfere with each other
-4. Durability: once a transaction is committed, data persists.
+Series of operations performed as a single logical unit of work. If any operation fails, the entire transaction is rolled back to maintain data integrity.
+
+### ACID Properties:
+
+1. `Atomicity`: all operations are completed successfully or none are applied.
+2. `Consistency`: transaction brings the database from one valid state to another.
+3. `Isolation`: If two transactions does not interfere with each other
+4. `Durability`: once a transaction is committed, data persists.
+
+### commit
+
+`COMMIT` command is a Transaction Control Language (TCL) statement used to permanently save all changes made during the current transaction
+
+1. ` SET autocommit = 1` (default ): Is a database session mode where every individual SQL statement is treated as a single transaction and is automatically made permanent (committed) immediately after it is executed successfully
+
+2. `SET autocommit = 0`: In this mode, SQL statements are not automatically committed after execution. Instead, you must explicitly use the COMMIT command to save changes or ROLLBACK to undo them.
+
+### ROLLBACK
+
+`ROLLBACK` command is used to undo all changes made during the current transaction and revert the database to its previous state. It only undo uncommitted changes.
+
+### SAVEPOINT
+
+`SAVEPOINT` command is used to set a savepoint within a transaction, allowing you to roll back to that specific point without affecting the entire transaction.
+
+```mysql
+START TRANSACTION;
+
+UPDATE employees SET balance = balance - 1000 WHERE id = 1;
+
+SAVEPOINT after_first_update;
+
+UPDATE employees SET balance = balance + 10 WHERE id = 1;
+-- error occurs here
+
+ROLLBACK TO after_first_update; -- Undo the second update but keep the first
+
+COMMIT; -- Permanently save the first update
+
+-- or make all statments rollback --
+
+IF everything_is_correct THEN
+    COMMIT; -- Permanently save both changes
+ELSE
+    ROLLBACK; -- Undo both changes if one part fails
+END IF;
+```
 
 ## 42. Inner vs Correlated Subquery
 
